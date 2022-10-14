@@ -1,42 +1,89 @@
 import re
 import sys
-phone_pattern ='(\d{3}[-\.\s/]??\d{3}[-\.\s/]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s/]??\d{4})'
-
-# compiling the reg_ex would save sime time!
-ph_reg = re.compile(phone_pattern)
 
 
-def check_for_phone(patient,note,chunk, output_handle):
-    """
-    Inputs:
-        - patient: Patient Number, will be printed in each occurance of personal information found
-        - note: Note Number, will be printed in each occurance of personal information found
-        - chunk: one whole record of a patient
-        - output_handle: an opened file handle. The results will be written to this file.
-            to avoid the time intensive operation of opening and closing the file multiple times
-            during the de-identification process, the file is opened beforehand and the handle is passed
-            to this function. 
-    Logic:
-        Search the entire chunk for phone number occurances. Find the location of these occurances 
-        relative to the start of the chunk, and output these to the output_handle file. 
-        If there are no occurances, only output Patient X Note Y (X and Y are passed in as inputs) in one line.
-        Use the precompiled regular expression to find phones.
-    """
-    # The perl code handles texts a bit differently, 
-    # we found that adding this offset to start and end positions would produce the same results
+
+
+
+'''
+this is just experiment
+ref = ["Memorial hospital", "MA"]
+pattern = "|".join(ref)
+reg = re.compile(pattern, re.IGNORECASE)
+check_chunk = "I went to the Memorial hospital in memorial day"
+for match in re.findall(reg, check_chunk):
+    print(match)
+'''
+
+
+
+
+
+
+
+
+
+# Prepare a location list from known name of locations and hospitals
+# from known hospital list
+with open('../lists/stripped_hospitals.txt') as hosp:
+    hosp_list = list()
+    for name in hosp:
+        name_ = name.replace('\n','')
+        hosp_list = hosp_list + [name_]
+
+# from known ambiguous local place names 
+with open('../lists/local_places_ambig.txt') as local_am:
+    local_am_list = list()
+    for name in local_am:
+        name_ = name.replace('\n','')
+        local_am_list = local_am_list + [name_]
+
+# from known local places
+with open('../lists/local_places_unambig.txt') as local_unam:
+    local_unam_list = list()
+    for name in local_unam:
+        name_ = name.replace('\n','')
+        local_unam_list = local_unam_list + [name_]
+
+# from known ambiguous locations name
+with open('../lists/locations_ambig.txt') as loc_am:
+    loc_am_list = list()
+    # In this text file the first line is blank
+    # Need to read lines except the 1st line
+    text = loc_am.readlines()
+    length = len(text) 
+    for i in range(1, length-1):
+        name_ = text[i]
+        name = name_.replace('\n','')
+        loc_am_list = loc_am_list + [name]
+
+# from known locations name 
+with open('../lists/locations_unambig.txt') as loc_unam:
+    loc_unam_list = list()
+    for name in loc_unam:
+        name_ = name.replace('\n','')
+        loc_unam_list = loc_unam_list + [name_]
+
+# Total list of words that can capture the location names
+total_strings = hosp_list + local_am_list + local_unam_list + loc_am_list + loc_unam_list 
+loc_pattern = "|".join(total_strings)
+ph_reg = re.compile(loc_pattern, re.IGNORECASE)
+
+
+#phone_pattern ='(\d{3}[-\.\s/]??\d{3}[-\.\s/]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s/]??\d{4})'
+#ph_reg = re.compile(phone_pattern)
+
+
+def check_for_location(patient, note, chunk, output_handle):
+
     offset = 27
-
-    # For each new note, the first line should be Patient X Note Y and then all the personal information positions
     output_handle.write('Patient {}\tNote {}\n'.format(patient,note))
 
-    # search the whole chunk, and find every position that matches the regular expression
-    # for each one write the results: "Start Start END"
-    # Also for debugging purposes display on the screen (and don't write to file) 
-    # the start, end and the actual personal information that we found
-    for match in ph_reg.finditer(chunk):
+    
+    for match in re.finditer(ph_reg, chunk):
                 
             # debug print, 'end=" "' stops print() from adding a new line
-            print(patient, note,end=' ')
+            print(patient, note, end=' ')
             print((match.start()-offset),match.end()-offset, match.group())
                 
             # create the string that we want to write to file ('start start end')    
@@ -46,8 +93,7 @@ def check_for_phone(patient,note,chunk, output_handle):
             output_handle.write(result+'\n')
 
             
-            
-def deid_phone(text_path= 'id.text', output_path = 'phone.phi'):
+def deid_location(text_path= 'id.text', output_path = 'loc.phi'):
     """
     Inputs: 
         - text_path: path to the file containing patient records
@@ -96,7 +142,7 @@ def deid_phone(text_path= 'id.text', output_path = 'phone.phi'):
                 if len(record_end):
                     # Now we have a full patient note stored in `chunk`, along with patient numerb and note number
                     # pass all to check_for_phone to find any phone numbers in note.
-                    check_for_phone(patient,note,chunk.strip(), output_file)
+                    check_for_location(patient,note,chunk.strip(), output_file)
                     
                     # initialize the chunk for the next note to be read
                     chunk = ''
@@ -105,5 +151,5 @@ if __name__== "__main__":
         
     
     
-    deid_phone(sys.argv[1], sys.argv[2])
+    deid_location(sys.argv[1], sys.argv[2])
     

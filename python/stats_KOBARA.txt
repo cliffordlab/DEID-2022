@@ -1,0 +1,24 @@
+The stats result of deid-KOBARA.py for a location PHI filter
+
+
+Seibi python % python stats.py id.deid id-phi.phrase loc.phi                   
+
+
+Examining "Location" category.
+
+
+==========================
+
+Num of true positives = 337
+
+Num of false positives = 2192
+
+Num of false negatives = 30
+
+Sensitivity/Recall = 0.918
+
+PPV/Specificity = 0.865
+
+==========================
+
+
