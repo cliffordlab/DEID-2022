@@ -72,7 +72,7 @@ def check_for_date(patient,note,chunk, output_handle):
         output_handle.write(result + '\n')
 
 
-def deid_phone(text_path='id.text', output_path='date.phi'):
+def deid_dates(text_path='id.text', output_path='date.phi'):
     """
     Inputs:
         - text_path: path to the file containing patient records
@@ -128,4 +128,4 @@ def deid_phone(text_path='id.text', output_path='date.phi'):
 
 
 if __name__ == "__main__":
-    deid_phone(sys.argv[1], sys.argv[2])
+    deid_date(sys.argv[1], sys.argv[2])
