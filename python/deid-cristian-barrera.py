@@ -230,33 +230,50 @@ def check_for_doctor_name(patient,note,chunk, output_handle):
             spl_pat = hcp_pat.split()
             # Check if it has RRT
             if 'RRT' in spl_pat:
-                # If it has a RRT, reverse the list
+                # If it has a RRT, reverse the list, so RRT is at the beggining
                 spl_pat = spl_pat[::-1]
             # Check if it has MD
             if 'MD' in spl_pat:
                 # If it has a MD, reverse the list
                 spl_pat = spl_pat[::-1]
-            # Get the position of the individual words
+            # Get the beggining and end of the position of individual names
             patw_beg = []
             patw_end = []
             patw_tmp = []
+            # Check each of the splitted strings for possible names
             for a in spl_pat:
+                # Add the length of the word
                 patw_tmp.append(len(a)+1)
+                # Sum the length of the word and words, with the x_position of the 
+                # initial match, substract the value of the word to get the exact position
+                # Also remove any other symbol that is not a letter and substract 2 positions
                 patw_beg.append(sum(patw_tmp) + hcp_pat_s - len(a)-len(re.sub('[a-zA-Z]','',a)) - 2)
+                # Similarly, for the end of the string, we substract 3. It seems to be related 
+                # to space between strings/words
                 patw_end.append(sum(patw_tmp) + hcp_pat_s - len(re.sub('[a-zA-Z]','',a)) - 3)
+            # remove the initial words, which is related to DR, MR, RRT, etc
+            # Also remove their initial positions as it will not be used
             patw_beg.pop(0)
             patw_end.pop(0)
             spl_pat.pop(0)
             # create the string that we want to write to file ('start start end')
+            # Check for start, end, word and position of the word
             for a,b,c,d in zip(patw_beg,patw_end,spl_pat,range(0,len(spl_pat))):
+                # if a word contains a symbol, remove it
                 c = re.sub('[^a-zA-Z]','',c)
+                # if the position is second (after first name) check if it is 
+                # a name and not a typical connector. If not, skip
                 if d == 1: 
                     if c.upper() == 'AND' or c.upper() == 'IN' or c.upper() == 'IS' or c.upper() == 'ON' or c.upper() == 'TO':
                         continue
+                # Check if the word is allocated in the name and surname lists
+                # as it uses /n /n between the words, we included them
                 if '\n' + c.upper()+'\n' in dr_first_ls or '\n' + c.upper() + '\n' in dr_second_ls:
+                    # get the result in a single variable
                     result = str(a) + ' ' + str(a) +' '+ str(b)
                     # write the result to one line of output
                     output_handle.write(result+'\n')
+                    # print out the found patient id, position and words
                     print(patient, note,end=' ')
                     print(a,b,c)
                 else:
@@ -306,10 +323,8 @@ def deid_run(text_path= 'id.text', output_path = 'deid-cristian-barrera.phi'):
                 if len(record_start):
                     patient, note = record_start[0]
                 chunk += line
-
                 # check to see if we have seen the end of one note
                 record_end = re.findall(end_of_record_pattern, line,flags=re.IGNORECASE)
-
                 if len(record_end):
                     # Now we have a full patient note stored in `chunk`, along with patient number and note number
                     # pass all to the differnt pattern recogn. to find any pattern in note.
