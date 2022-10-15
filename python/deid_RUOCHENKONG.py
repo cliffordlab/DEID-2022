@@ -72,7 +72,7 @@ def check_for_date(patient,note,chunk, output_handle):
         output_handle.write(result + '\n')
 
 
-def deid_dates(text_path='id.text', output_path='date.phi'):
+def deid_date(text_path='id.text', output_path='date.phi'):
     """
     Inputs:
         - text_path: path to the file containing patient records
