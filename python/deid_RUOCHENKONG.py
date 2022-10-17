@@ -47,7 +47,7 @@ def check_for_date(patient,note,chunk, output_handle):
             Search the entire chunk for date occurances. Find the location of these occurances
             relative to the start of the chunk, and output these to the output_handle file.
             If there are no occurances, only output Patient X Note Y (X and Y are passed in as inputs) in one line.
-            Use the precompiled regular expression to find phones.
+            Use the precompiled regular expression to find dates.
         """
     # The perl code handles texts a bit differently,
     # we found that adding this offset to start and end positions would produce the same results
@@ -81,17 +81,17 @@ def deid_date(text_path='id.text', output_path='date.phi'):
     Outputs:
         for each patient note, the output file will start by a line declaring the note in the format of:
             Patient X Note Y
-        then for each phone number found, it will have another line in the format of:
+        then for each date found, it will have another line in the format of:
             start start end
-        where the start is the start position of the detected phone number string, and end is the detected
+        where the start is the start position of the detected date string, and end is the detected
         end position of the string both relative to the start of the patient note.
-        If there is no phone number detected in the patient note, only the first line (Patient X Note Y) is printed
+        If there is no date detected in the patient note, only the first line (Patient X Note Y) is printed
         to the output
     Screen Display:
-        For each phone number detected, the following information will be displayed on the screen for debugging purposes
+        For each date detected, the following information will be displayed on the screen for debugging purposes
         (these will not be written to the output file):
-            start end phone_number
-        where `start` is the start position of the detected phone number string, and `end` is the detected end position of the string
+            start end date
+        where `start` is the start position of the detected date string, and `end` is the detected end position of the string
         both relative to the start of patient note.
 
     """
@@ -119,8 +119,8 @@ def deid_date(text_path='id.text', output_path='date.phi'):
                 record_end = re.findall(end_of_record_pattern, line, flags=re.IGNORECASE)
 
                 if len(record_end):
-                    # Now we have a full patient note stored in `chunk`, along with patient numerb and note number
-                    # pass all to check_for_phone to find any phone numbers in note.
+                    # Now we have a full patient note stored in `chunk`, along with patient number and note number
+                    # pass all to check_for_date to find any kinds of date formate in note.
                     check_for_date(patient, note, chunk.strip(), output_file)
 
                     # initialize the chunk for the next note to be read
