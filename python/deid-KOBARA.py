@@ -15,7 +15,11 @@ for match in re.findall(reg, check_chunk):
     print(match)
 '''
 
-
+'''
+python deid-KOBARA.py id.text loc.phi 
+python stats.py id.deid id-phi.phrase loc.phi     
+ 
+'''
 
 
 
