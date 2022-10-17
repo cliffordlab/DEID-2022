@@ -1,0 +1,216 @@
+(base) zheyuanzhang@zheyuans-MBP python % python stats.py id.deid id-phi.phrase date.phi
+
+
+==========================
+
+Num of true positives = 490
+
+Num of false positives = 903
+
+Num of false negatives = 1289
+
+Sensitivity/Recall = 0.275
+
+PPV/Specificity = 0.663
+
+==========================
+
+
+Total events in 'id-phi.phrase': 1779
+========================================
+Categories Present:
+Location
+DateYear
+Date
+HCPName
+PTName
+RelativeProxyName
+Phone
+Other
+PTNameInitial
+Age
+========================================
+
+
+
+
+
+
+Examining "Location" category.
+
+
+==========================
+
+Num of true positives = 19
+
+Num of false positives = 1102
+
+Num of false negatives = 348
+
+Sensitivity/Recall = 0.052
+
+PPV/Specificity = 0.588
+
+==========================
+
+
+Examining "DateYear" category.
+
+
+==========================
+
+Num of true positives = 3
+
+Num of false positives = 1108
+
+Num of false negatives = 43
+
+Sensitivity/Recall = 0.065
+
+PPV/Specificity = 0.586
+
+==========================
+
+
+Examining "Date" category.
+
+
+==========================
+
+Num of true positives = 444
+
+Num of false positives = 913
+
+Num of false negatives = 38
+
+Sensitivity/Recall = 0.921
+
+PPV/Specificity = 0.659
+
+==========================
+
+
+Examining "HCPName" category.
+
+
+==========================
+
+Num of true positives = 9
+
+Num of false positives = 1102
+
+Num of false negatives = 584
+
+Sensitivity/Recall = 0.015
+
+PPV/Specificity = 0.588
+
+==========================
+
+
+Examining "PTName" category.
+
+
+==========================
+
+Num of true positives = 6
+
+Num of false positives = 1106
+
+Num of false negatives = 48
+
+Sensitivity/Recall = 0.111
+
+PPV/Specificity = 0.587
+
+==========================
+
+
+Examining "RelativeProxyName" category.
+
+
+==========================
+
+Num of true positives = 2
+
+Num of false positives = 1108
+
+Num of false negatives = 173
+
+Sensitivity/Recall = 0.011
+
+PPV/Specificity = 0.586
+
+==========================
+
+
+Examining "Phone" category.
+
+
+==========================
+
+Num of true positives = 6
+
+Num of false positives = 1108
+
+Num of false negatives = 47
+
+Sensitivity/Recall = 0.113
+
+PPV/Specificity = 0.586
+
+==========================
+
+
+Examining "Other" category.
+
+
+==========================
+
+Num of true positives = 0
+
+Num of false positives = 1108
+
+Num of false negatives = 3
+
+Sensitivity/Recall = 0.0
+
+PPV/Specificity = 0.586
+
+==========================
+
+
+Examining "PTNameInitial" category.
+
+
+==========================
+
+Num of true positives = 0
+
+Num of false positives = 1108
+
+Num of false negatives = 2
+
+Sensitivity/Recall = 0.0
+
+PPV/Specificity = 0.586
+
+==========================
+
+
+Examining "Age" category.
+
+
+==========================
+
+Num of true positives = 1
+
+Num of false positives = 1107
+
+Num of false negatives = 3
+
+Sensitivity/Recall = 0.25
+
+PPV/Specificity = 0.586
+
+==========================
