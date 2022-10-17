@@ -1,31 +1,20 @@
 import re
 import sys
 
+'''
+This deid-KOBARA.py was modified aiming to filter location PHI.
+Using the known location names in the lists file in the DEID-2022, a list of location PHIs was created.
 
-
-
+Filter performance
+Per category stats: Location category
+            Pre     Post
+TP          1       337
+FP          16      2192
+FN          366     30
+Sensitivity 0.003   0.918
+Specificity 0.467   0.865
 
 '''
-this is just experiment
-ref = ["Memorial hospital", "MA"]
-pattern = "|".join(ref)
-reg = re.compile(pattern, re.IGNORECASE)
-check_chunk = "I went to the Memorial hospital in memorial day"
-for match in re.findall(reg, check_chunk):
-    print(match)
-'''
-
-'''
-python deid-KOBARA.py id.text loc.phi 
-python stats.py id.deid id-phi.phrase loc.phi     
- 
-'''
-
-
-
-
-
-
 
 # Prepare a location list from known name of locations and hospitals
 # from known hospital list
@@ -72,11 +61,6 @@ with open('../lists/locations_unambig.txt') as loc_unam:
 total_strings = hosp_list + local_am_list + local_unam_list + loc_am_list + loc_unam_list 
 loc_pattern = "|".join(total_strings)
 ph_reg = re.compile(loc_pattern, re.IGNORECASE)
-
-
-#phone_pattern ='(\d{3}[-\.\s/]??\d{3}[-\.\s/]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s/]??\d{4})'
-#ph_reg = re.compile(phone_pattern)
-
 
 def check_for_location(patient, note, chunk, output_handle):
 
